@@ -1,3 +1,5 @@
+import { parseUrl } from "../mixins/parseUrl";
+
 export default {
   props: {
     proxy: Object,
@@ -6,6 +8,8 @@ export default {
     // custom service often consume info from an API using the item link (url) as a base url,
     // but sometimes the base url is different. An optional alternative URL can be provided with the "endpoint" key.
     this.endpoint = this.item.endpoint || this.item.url;
+
+    this.endpoint = parseUrl(this.endpoint);
 
     if (this.endpoint.endsWith("/")) {
       this.endpoint = this.endpoint.slice(0, -1);

@@ -22,6 +22,7 @@
 <script>
 import service from "@/mixins/service.js";
 import Generic from "./Generic.vue";
+import { parseUrl } from "../../mixins/parseUrl";
 
 export default {
   name: "UptimeKuma",
@@ -113,12 +114,13 @@ export default {
   },
   created() {
     /* eslint-disable */
+    this.item.url = parseUrl(this.item.url);
     this.item.url = `${this.item.url}/status/${this.dashboard}`;
     this.fetchStatus();
   },
   methods: {
     fetchStatus: function () {
-      const now = Date.now()
+      const now = Date.now();
       this.fetch(`/api/status-page/${this.dashboard}?cachebust=${now}`)
         .catch((e) => console.error(e))
         .then((resp) => (this.incident = resp));
