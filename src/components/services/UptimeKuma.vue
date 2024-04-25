@@ -114,7 +114,7 @@ export default {
   },
   created() {
     /* eslint-disable */
-    this.item.url = parseUrl(this.item.url);
+    this.item.url = parseUrl(this.item);
     this.item.url = `${this.item.url}/status/${this.dashboard}`;
     this.fetchStatus();
   },

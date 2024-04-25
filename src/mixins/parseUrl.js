@@ -1,32 +1,22 @@
 // parseUrl.js
-function getTldFromHostname(hostname) {
-  const parts = hostname.split(".");
-  return parts.length > 1 ? `${parts[parts.length - 1]}` : "";
+
+function isPrivateIpAddress(hostname) {
+  return /^(10\.\d{1,3}\.\d{1,3}\.\d{1,3}|192\.168\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3})$/.test(
+    hostname,
+  );
 }
 
-export function parseUrl(url) {
-  if (url.startsWith("*")) {
-    const parts = url.slice(1).split("|"); // Remove '*' and split by '|'
-    if (parts.length === 2) {
-      const port = parts[0];
-      const subdomain = parts[1];
-      const protocol = window.location.protocol;
-      const tld = getTldFromHostname(window.location.hostname);
-      const hostnameParts = window.location.hostname.split(".");
-      const hostname = hostnameParts[0];
-
-      if (hostname === "localhost") {
-        return `${protocol}//${hostname}:${port}`;
-      } else if (hostnameParts.length === 3) {
-        return `${protocol}//${subdomain}.${hostnameParts[1]}.${tld}`;
-      } else if (
-        hostnameParts.length === 4 &&
-        hostnameParts.every((part) => !isNaN(part))
-      ) {
-        return `${protocol}//${hostnameParts.join(".")}:${port}`;
-      }
-    }
+export function parseUrl(item) {
+  const { url, internal, external } = item;
+  // if internal or external is not defined, return the original url
+  if (!internal && !external) {
+    return url;
   }
-  // Return the original URL if no special marker
-  return url;
+  const hostname = window.location.hostname;
+  // Check if hostname is 'localhost' or an IP address
+  if (hostname === "localhost" || isPrivateIpAddress(hostname)) {
+    return internal;
+  } else {
+    return external;
+  }
 }

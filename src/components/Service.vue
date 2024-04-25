@@ -16,7 +16,7 @@ export default {
   computed: {
     component() {
       // Parse URL if needed
-      let parsedUrl = parseUrl(this.item.url);
+      let parsedUrl = parseUrl(this.item);
 
       // Check if additional path needs to be appended
       if (this.item.path) {
