@@ -7,13 +7,9 @@ export default {
   created: function () {
     // custom service often consume info from an API using the item link (url) as a base url,
     // but sometimes the base url is different. An optional alternative URL can be provided with the "endpoint" key.
-    this.endpoint =
-      this.item.endpoint ||
-      this.item.url ||
-      this.item.internal ||
-      this.item.external;
+    this.url = parseUrl(this.item);
 
-    this.endpoint = parseUrl(this.item);
+    this.endpoint = this.item.endpoint || this.url;
 
     if (this.endpoint.endsWith("/")) {
       this.endpoint = this.endpoint.slice(0, -1);
