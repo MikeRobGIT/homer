@@ -9,6 +9,10 @@ export default defineConfig({
   base: "",
   build: {
     assetsDir: "resources",
+    sourcemap: true,
+  },
+  configureWebpack: {
+    devtool: "source-map:",
   },
   plugins: [
     vue(),
